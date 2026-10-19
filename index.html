@@ -1,1 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoorain's Bakes | Premium Homemade Bakes Singapore</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- KEPT THE STRONG COLOR PALETTE --- */
+        :root {
+            --primary-pink: #C2185B; 
+            --dark-pink: #880E4F;
+            --accent-gold: #FFC107;
+            --text-dark: #2D1A1A; 
+            --text-light: #5D4037; 
+            --bg-cream: #FFF8F0;
+            --white: #ffffff;
+        }
 
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-cream);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+        }
+
+        /* Crucial fix: Prevents the sticky menu from covering the "About" title */
+        section {
+            scroll-margin-top: 100px; 
+        }
+
+        /* --- PAGE SWITCHING LOGIC --- */
+        .page {
+            display: none; /* Hide all pages by default */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .page.active {
+            display: block; /* Show the active page */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Moving Text Dashboard (Marquee) */
+        .marquee-container {
+            background-color: var(--primary-pink);
+            color: var(--white);
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee-content span { margin: 0 30px; }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background-color: var(--white);
+            box-shadow: 0 4px 15px rgba(194, 24, 91, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .logo span { color: var(--primary-pink); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            transition: color 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 3px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-pink);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--primary-pink); }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-pink);
+            color: var(--white) !important;
+            padding: 14px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(194, 24, 91, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--dark-pink);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(194, 24, 91, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 85vh;
+            background: linear-gradient(rgba(45, 26, 26, 0.6), rgba(45, 26, 26, 0.6)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=2000&auto=format&fit=crop') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            color: var(--white);
+        }
+
+        .hero h1 { font-size: 4rem; margin-bottom: 15px; text-shadow: 2px 2px 8px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.3rem; color: #f0f0f0; margin-bottom: 35px; max-width: 700px; }
+
+        /* Menu Section */
+        .menu-section { padding: 100px 5%; background-color: var(--white); }
+        .section-title { text-align: center; font-size: 3rem; margin-bottom: 60px; color: var(--primary-pink); }
+        .section-title::after {
+            content: ''; display: block; width: 80px; height: 4px;
+            background-color: var(--accent-gold); margin: 15px auto 0; border-radius: 2px;
+        }
+
+        .menu-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px; max-width: 1200px; margin: 0 auto;
+        }
+
+        .menu-card {
+            background: var(--bg-cream); border-radius: 20px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; border: 2px solid transparent;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-15px); box-shadow: 0 20px 40px rgba(194, 24, 91, 0.2);
+            border-color: var(--primary-pink);
+        }
+
+        .menu-img { width: 100%; height: 250px; object-fit: cover; transition: transform 0.6s; }
+        .menu-card:hover .menu-img { transform: scale(1.1); }
+        .menu-content { padding: 25px; }
+        .menu-title { font-size: 1.6rem; margin-bottom: 8px; color: var(--text-dark); }
+        .menu-desc { font-size: 0.95rem; color: var(--text-light); margin-bottom: 15px; }
+        .menu-price { font-weight: 800; color: var(--primary-pink); font-size: 1.3rem; font-family: 'Playfair Display', serif;}
+        .click-hint { font-size: 0.85rem; color: var(--accent-gold); margin-top: 15px; font-weight: 600; display: block; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* About Section */
+        .about-section { padding: 100px 5%; background-color: var(--bg-cream); text-align: center; }
+        .features { display: flex; justify-content: center; gap: 40px; margin-top: 50px; flex-wrap: wrap; }
+        .feature {
+            background: var(--white); padding: 40px 30px; border-radius: 20px; width: 280px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.4s ease;
+            border-bottom: 5px solid var(--accent-gold);
+        }
+        .feature:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(194, 24, 91, 0.15); border-bottom: 5px solid var(--primary-pink); }
+        .feature h3 { color: var(--primary-pink); font-size: 1.5rem; margin-bottom: 15px; }
+
+        /* --- ORDER SUBPAGE STYLES --- */
+        .subpage-header {
+            background: linear-gradient(rgba(194, 24, 91, 0.8), rgba(136, 14, 79, 0.9)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=2000&auto=format&fit=crop') center/cover;
+            padding: 80px 20px;
+            text-align: center;
+            color: var(--white);
+        }
+        .subpage-header h1 { font-size: 3rem; margin-bottom: 10px; }
+        
+        .order-container {
+            max-width: 800px; margin: -50px auto 100px; padding: 50px;
+            background: var(--white); border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+        }
+
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-dark); }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 15px; border: 2px solid #E0E0E0; border-radius: 10px; font-family: 'Poppins', sans-serif; transition: border 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--primary-pink);
+        }
+        .form-group textarea { height: 120px; resize: vertical; }
+        .submit-btn { width: 100%; font-size: 1.1rem; }
+
+        /* Footer */
+        footer { background-color: var(--text-dark); color: var(--white); text-align: center; padding: 40px; font-size: 0.95rem; }
+        footer a { color: var(--accent-gold); text-decoration: none; font-weight: 600; }
+        footer a:hover { text-decoration: underline; }
+
+        /* Modal (Pop-up for details) */
+        .modal-overlay {
+            display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(45, 26, 26, 0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px;
+            opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--white); width: 100%; max-width: 550px; border-radius: 20px; overflow: hidden; position: relative;
+            transform: scale(0.7); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .close-btn {
+            position: absolute; top: 15px; right: 15px; background: var(--white); border: none; font-size: 1.8rem;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex; justify-content: center; align-items: center; color: var(--primary-pink); transition: transform 0.3s, background 0.3s;
+        }
+        .close-btn:hover { transform: rotate(90deg); background: var(--primary-pink); color: var(--white); }
+        .modal-img { width: 100%; height: 350px; object-fit: cover; }
+        .modal-details { padding: 35px; }
+        .modal-details h2 { margin-bottom: 15px; color: var(--primary-pink); font-size: 2rem; }
+        .modal-details p { color: var(--text-light); margin-bottom: 25px; font-size: 1rem; line-height: 1.8;}
+        .modal-price { font-size: 1.5rem; font-weight: 800; margin-bottom: 25px; font-family: 'Playfair Display', serif;}
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .nav-links { display: none; }
+            .modal-img { height: 250px; }
+            .order-container { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Global Header (Always visible) -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <span>✨ 100% HALAL CERTIFIED</span>
+            <span>🍰 FRESHLY BAKED DAILY</span>
+            <span>🚚 SINGAPORE DELIVERY</span>
+            <span>🎉 PRE-ORDER 3-4 DAYS IN ADVANCE</span>
+            <span>✨ 100% HALAL CERTIFIED</span>
+            <span>🍰 FRESHLY BAKED DAILY</span>
+            <span>🚚 SINGAPORE DELIVERY</span>
+            <span>🎉 PRE-ORDER 3-4 DAYS IN ADVANCE</span>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo" onclick="switchPage('home')">Hoorain's <span>Bakes</span></div>
+        <div class="nav-links">
+            <!-- Onclick switches back to home page and scrolls to menu -->
+            <a onclick="switchPage('home', 'menu')">Menu</a>
+            <!-- Onclick switches back to home page and scrolls to about -->
+            <a onclick="switchPage('home', 'about')">About</a> 
+            <!-- Onclick opens the brand new Subpage -->
+            <a class="btn" style="padding: 10px 25px;" onclick="switchPage('order')">Order Now</a>
+        </div>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- PAGE 1: HOME PAGE                          -->
+    <!-- ========================================== -->
+    <div id="page-home" class="page active">
+        
+        <header class="hero">
+            <h1>Made with Love, Baked with Care</h1>
+            <p>Premium homemade Halal bakes in Singapore. From our signature Sugee Cakes to gooey Cinnamon Rolls, treat yourself to a slice of heaven.</p>
+            <a onclick="document.getElementById('menu').scrollIntoView()" class="btn">Explore Menu</a>
+        </header>
+
+        <section id="menu" class="menu-section">
+            <h2 class="section-title">Our Signature Bakes</h2>
+            <div class="menu-grid">
+                
+                <div class="menu-card" onclick="openModal('Cinnamon Rolls', 'Soft, buttery, and irresistible, topped with our signature cream cheese frosting. Baked fresh in trays, perfect for sharing with family. Best enjoyed warm!', '4 Pcs: $18 | 9 Pcs: $34', 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop" alt="Cinnamon Rolls" class="menu-img">
+                    <div class="menu-content">
+                        <h3 class="menu-title">Cinnamon Rolls</h3>
+                        <p class="menu-desc">Soft, buttery, and irresistible, topped with our signature cream cheese frosting.</p>
+                        <div class="menu-price">4 Pcs: $18 | 9 Pcs: $34</div>
+                        <span class="click-hint">Click to view details →</span>
+                    </div>
+                </div>
+
+                <div class="menu-card" onclick="openModal('Double Chocolate Banana', 'Rich chocolate, ripe banana, and chocolate chips in every bite. Baked in a 650ml container, it is the perfect comfort food for any time of the day.', '$28', 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=800&auto=format&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=800&auto=format&fit=crop" alt="Double Chocolate Banana" class="menu-img">
+                    <div class="menu-content">
+                        <h3 class="menu-title">Double Chocolate Banana</h3>
+                        <p class="menu-desc">Rich chocolate, ripe banana, and chocolate chips in every bite. 650ml container.</p>
+                        <div class="menu-price">$28</div>
+                        <span class="click-hint">Click to view details →</span>
+                    </div>
+                </div>
+
+                <div class="menu-card" onclick="openModal('Lychee Rose Sugee', 'A local favorite. Rich semolina cake infused with fragrant rose and sweet lychee. A perfect blend of traditional flavors and modern elegance.', 'DM for Pricing', 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?q=80&w=800&auto=format&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?q=80&w=800&auto=format&fit=crop" alt="Sugee Cake" class="menu-img">
+                    <div class="menu-content">
+                        <h3 class="menu-title">Lychee Rose Sugee</h3>
+                        <p class="menu-desc">A local favorite. Rich semolina cake infused with fragrant rose and sweet lychee.</p>
+                        <div class="menu-price">DM for Pricing</div>
+                        <span class="click-hint">Click to view details →</span>
+                    </div>
+                </div>
+
+                <div class="menu-card" onclick="openModal('Chocolate Moist', 'Classic and comforting, baked with chocolate chunks and chocolate chips. Moist, rich, and guaranteed to satisfy your sweet tooth.', '$25', 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?q=80&w=800&auto=format&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?q=80&w=800&auto=format&fit=crop" alt="Chocolate Moist Cake" class="menu-img">
+                    <div class="menu-content">
+                        <h3 class="menu-title">Chocolate Moist</h3>
+                        <p class="menu-desc">Classic and comforting, baked with chocolate chunks and chocolate chips.</p>
+                        <div class="menu-price">$25</div>
+                        <span class="click-hint">Click to view details →</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <h2 class="section-title">Why Choose Us?</h2>
+            <p style="max-width: 600px; margin: 0 auto; color: var(--text-light); font-size: 1.1rem;">We are a home-based bakery in Singapore dedicated to bringing you the best premium, halal treats.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>100% Halal</h3>
+                    <p>All our ingredients are halal-friendly, ensuring peace of mind with every bite.</p>
+                </div>
+                <div class="feature">
+                    <h3>Baked Fresh</h3>
+                    <p>We bake in small batches to guarantee freshness and quality in every order.</p>
+                </div>
+                <div class="feature">
+                    <h3>Made with Love</h3>
+                    <p>Every cake and roll is crafted with care, just like we would for our own family.</p>
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- END HOME PAGE -->
+
+    <!-- ========================================== -->
+    <!-- PAGE 2: ORDER SUBPAGE                      -->
+    <!-- ========================================== -->
+    <div id="page-order" class="page">
+        
+        <div class="subpage-header">
+            <h1>Place Your Order</h1>
+            <p>Please allow 3-4 days notice for all bakes.</p>
+        </div>
+
+        <div class="order-container">
+            <form onsubmit="event.preventDefault(); alert('Thank you! This is a demo form. In a real website, this would send an email or WhatsApp message.');">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                    <label for="phone">WhatsApp Number</label>
+                    <input type="tel" id="phone" required placeholder="+65 XXXX XXXX">
+                </div>
+                <div class="form-group">
+                    <label for="item">What would you like to order?</label>
+                    <select id="item">
+                        <option>Cinnamon Rolls (4 Pcs - $18)</option>
+                        <option>Cinnamon Rolls (9 Pcs - $34)</option>
+                        <option>Double Chocolate Banana ($28)</option>
+                        <option>Chocolate Moist ($25)</option>
+                        <option>Custom / Sugee Cake Inquiry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Special Requests / Date Needed</label>
+                    <textarea id="message" placeholder="Let us know when you need it, or if you have any allergies!"></textarea>
+                </div>
+                <button type="submit" class="btn submit-btn">Send Order via WhatsApp</button>
+            </form>
+        </div>
+
+    </div> <!-- END ORDER PAGE -->
+
+
+    <!-- Footer (Always visible) -->
+    <footer>
+        <p>&copy; 2024 Hoorain's Bakes. All rights reserved.</p>
+        <p>Follow us on Instagram: <a href="https://instagram.com/hoorainbakes" target="_blank">@hoorainbakes</a></p>
+    </footer>
+
+    <!-- Modal Pop-up (For menu items) -->
+    <div class="modal-overlay" id="productModal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal(event, true)">&times;</button>
+            <img id="modalImg" src="" alt="Product Image" class="modal-img">
+            <div class="modal-details">
+                <h2 id="modalTitle">Product Name</h2>
+                <p id="modalDesc">Product Description</p>
+                <div class="modal-price" id="modalPrice">Price</div>
+                <!-- Clicking this switches to the Order page -->
+                <button class="btn" onclick="closeModal(event, true); switchPage('order');">Order This Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 1. PAGE SWITCHING LOGIC
+        function switchPage(pageName, scrollToId = null) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            document.getElementById('page-' + pageName).classList.add('active');
+
+            // Scroll to a specific section (if provided), otherwise scroll to top
+            if (scrollToId) {
+                setTimeout(() => { // Small timeout lets the page render first
+                    document.getElementById(scrollToId).scrollIntoView({ behavior: 'smooth' });
+                }, 50);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // 2. MODAL LOGIC
+        function openModal(title, desc, price, imgSrc) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = desc;
+            document.getElementById('modalPrice').innerText = price;
+            document.getElementById('modalImg').src = imgSrc;
+            
+            const modal = document.getElementById('productModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal(event, forceClose = false) {
+            if (forceClose || event.target.id === 'productModal') {
+                const modal = document.getElementById('productModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto'; 
+            }
+        }
+    </script>
+
+</body>
+</html>
