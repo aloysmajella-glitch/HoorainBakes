@@ -7,7 +7,6 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* --- KEPT THE STRONG COLOR PALETTE --- */
         :root {
             --primary-pink: #C2185B; 
             --dark-pink: #880E4F;
@@ -18,7 +17,6 @@
             --white: #ffffff;
         }
 
-        /* Basic Reset */
         * {
             margin: 0;
             padding: 0;
@@ -42,25 +40,24 @@
             font-weight: 800;
         }
 
-        /* Crucial fix: Prevents the sticky menu from covering the "About" title */
         section {
             scroll-margin-top: 100px; 
         }
 
-        /* --- PAGE SWITCHING LOGIC --- */
+        /* PAGE SWITCHING LOGIC */
         .page {
-            display: none; /* Hide all pages by default */
+            display: none;
             animation: fadeIn 0.5s ease-in-out;
         }
         .page.active {
-            display: block; /* Show the active page */
+            display: block;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Moving Text Dashboard (Marquee) */
+        /* Marquee */
         .marquee-container {
             background-color: var(--primary-pink);
             color: var(--white);
@@ -218,7 +215,7 @@
         .feature:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(194, 24, 91, 0.15); border-bottom: 5px solid var(--primary-pink); }
         .feature h3 { color: var(--primary-pink); font-size: 1.5rem; margin-bottom: 15px; }
 
-        /* --- ORDER SUBPAGE STYLES --- */
+        /* Order Subpage */
         .subpage-header {
             background: linear-gradient(rgba(194, 24, 91, 0.8), rgba(136, 14, 79, 0.9)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=2000&auto=format&fit=crop') center/cover;
             padding: 80px 20px;
@@ -248,7 +245,7 @@
         footer a { color: var(--accent-gold); text-decoration: none; font-weight: 600; }
         footer a:hover { text-decoration: underline; }
 
-        /* Modal (Pop-up for details) */
+        /* Modal */
         .modal-overlay {
             display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(45, 26, 26, 0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px;
@@ -272,43 +269,47 @@
         .modal-details p { color: var(--text-light); margin-bottom: 25px; font-size: 1rem; line-height: 1.8;}
         .modal-price { font-size: 1.5rem; font-weight: 800; margin-bottom: 25px; font-family: 'Playfair Display', serif;}
 
+        /* --- MOBILE FIXES --- */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.8rem; }
             .modal-img { height: 250px; }
-            .order-container { padding: 30px 20px; }
+            .order-container { padding: 30px 20px; margin-top: -30px; }
+            section { scroll-margin-top: 150px; }
 
-            /* Keep nav visible on mobile */
+            /* Stack Navigation for Mobile */
             nav {
                 flex-direction: column;
-                gap: 12px;
-                padding: 12px 4%;
+                padding: 15px;
+                gap: 15px;
             }
 
-            .logo { font-size: 24px; }
+            .logo { font-size: 26px; }
 
+            /* Force links to show, wrap, and center */
             .nav-links {
-                display: flex;
+                display: flex !important;
                 flex-wrap: wrap;
                 justify-content: center;
-                gap: 15px;
                 width: 100%;
+                gap: 20px;
             }
 
-            .nav-links a { font-size: 0.95rem; }
+            .nav-links a {
+                font-size: 1rem;
+                padding: 5px;
+            }
 
+            /* Adjust button size for mobile */
             .nav-links a.btn {
-                padding: 8px 20px !important;
-                font-size: 0.9rem;
+                padding: 10px 25px !important;
+                font-size: 0.95rem;
+                width: auto;
             }
-
-            /* Give scroll-margin enough room for the taller stacked header */
-            section { scroll-margin-top: 140px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Global Header (Always visible) -->
     <div class="marquee-container">
         <div class="marquee-content">
             <span>✨ 100% HALAL CERTIFIED</span>
@@ -325,20 +326,13 @@
     <nav>
         <div class="logo" onclick="switchPage('home')">Hoorain's <span>Bakes</span></div>
         <div class="nav-links">
-            <!-- Onclick switches back to home page and scrolls to menu -->
             <a onclick="switchPage('home', 'menu')">Menu</a>
-            <!-- Onclick switches back to home page and scrolls to about -->
             <a onclick="switchPage('home', 'about')">About</a> 
-            <!-- Onclick opens the brand new Subpage -->
             <a class="btn" onclick="switchPage('order')">Order Now</a>
         </div>
     </nav>
 
-    <!-- ========================================== -->
-    <!-- PAGE 1: HOME PAGE                          -->
-    <!-- ========================================== -->
     <div id="page-home" class="page active">
-        
         <header class="hero">
             <h1>Made with Love, Baked with Care</h1>
             <p>Premium homemade Halal bakes in Singapore. From our signature Sugee Cakes to gooey Cinnamon Rolls, treat yourself to a slice of heaven.</p>
@@ -412,11 +406,8 @@
             </div>
         </section>
 
-    </div> <!-- END HOME PAGE -->
+    </div> 
 
-    <!-- ========================================== -->
-    <!-- PAGE 2: ORDER SUBPAGE                      -->
-    <!-- ========================================== -->
     <div id="page-order" class="page">
         
         <div class="subpage-header">
@@ -452,16 +443,13 @@
             </form>
         </div>
 
-    </div> <!-- END ORDER PAGE -->
+    </div> 
 
-
-    <!-- Footer (Always visible) -->
     <footer>
         <p>&copy; 2024 Hoorain's Bakes. All rights reserved.</p>
         <p>Follow us on Instagram: <a href="https://instagram.com/hoorainbakes" target="_blank">@hoorainbakes</a></p>
     </footer>
 
-    <!-- Modal Pop-up (For menu items) -->
     <div class="modal-overlay" id="productModal" onclick="closeModal(event)">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal(event, true)">&times;</button>
@@ -470,27 +458,21 @@
                 <h2 id="modalTitle">Product Name</h2>
                 <p id="modalDesc">Product Description</p>
                 <div class="modal-price" id="modalPrice">Price</div>
-                <!-- Clicking this switches to the Order page -->
                 <button class="btn" onclick="closeModal(event, true); switchPage('order');">Order This Item</button>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript -->
     <script>
-        // 1. PAGE SWITCHING LOGIC
         function switchPage(pageName, scrollToId = null) {
-            // Hide all pages
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
             
-            // Show the selected page
             document.getElementById('page-' + pageName).classList.add('active');
 
-            // Scroll to a specific section (if provided), otherwise scroll to top
             if (scrollToId) {
-                setTimeout(() => { // Small timeout lets the page render first
+                setTimeout(() => { 
                     document.getElementById(scrollToId).scrollIntoView({ behavior: 'smooth' });
                 }, 50);
             } else {
@@ -498,7 +480,6 @@
             }
         }
 
-        // 2. MODAL LOGIC
         function openModal(title, desc, price, imgSrc) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalDesc').innerText = desc;
